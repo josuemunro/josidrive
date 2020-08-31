@@ -65,6 +65,26 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  #config.vm.provision "shell", inline: <<-SHELL
-  #SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+
+      export MYSQL_PWD='insecure_mysqlroot_pw'
+
+      echo "mysql-server mysql-server/root_password password $MYSQL_PWD" | debconf-set-selections
+      echo "mysql-server mysql-server/root_password_again password $MYSQL_PWD" | debconf-set-selections
+
+      apt-get -y install mysql-server
+
+      echo "CREATE DATABASE josidrive;" | mysql
+      echo "CREATE USER 'webuser'@'%' IDENTIFIED BY 'insecure_db_pw';" | mysql
+      echo "GRANT ALL PRIVILEGES ON josidrive.* TO 'webuser'@'%'" | mysql
+
+      export MYSQL_PWD='insecure_db_pw'
+
+      cat /vagrant/setup-database.sql | mysql -u webuser josidrive
+
+      sed -i'' -e '/bind-address/s/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+      service mysql restart
+  SHELL
 end
