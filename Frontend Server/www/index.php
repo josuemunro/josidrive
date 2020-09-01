@@ -7,13 +7,29 @@
 <body>
 <h1>Yeah the boys</h1>
 
-<form action="upload.php" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     Select File to Upload:
-    <input type="file" name="file">
-    <input type="submit" name="submit" value="Upload">
+    <input type="file" name="myfile">
+    <button name="btn">Upload ya stuff</button>
 </form>
 <?php
   include 'dbConfig.php';
+  if(isset($_POST["btn"])){
+    echo "something happened ";
+    $name = $_FILES['myfile']['name'];
+    $type = $_FILES['myfile']['type'];
+    $data = file_get_contents($_FILES['myfile']['tmp_name']);
+    try {
+      $sql = "INSERT INTO files (name, datatype, data)
+    VALUES ('$name', '$type', 'yes')";
+      // use exec() because no results are returned
+      $conn->exec($sql);
+      echo "New record created successfully";
+    } catch(PDOException $e) {
+      echo $sql . "<br>" . $e->getMessage();
+    }
+  }
+    
   $q = $conn->query("SELECT * FROM files");
 
   while($row = $q->fetch()){
