@@ -1,7 +1,7 @@
 CREATE TABLE files (
-    path varchar(50) NOT NULL,
-    name varchar(30) NOT NULL,
-    PRIMARY KEY (path)
+    id int(11) NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    datatype varchar(255) NOT NULL,
+    data BLOB NOT NULL,
+    PRIMARY KEY (id)
 );
-
-INSERT INTO files VALUES ('/uploads/ligma.txt','ligma.txt');
