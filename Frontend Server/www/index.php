@@ -18,10 +18,10 @@
     echo "something happened ";
     $name = $_FILES['myfile']['name'];
     $type = $_FILES['myfile']['type'];
-    $data = file_get_contents($_FILES['myfile']['tmp_name']);
+    $data = addslashes(file_get_contents($_FILES['myfile']['tmp_name']));
     try {
       $sql = "INSERT INTO files (name, datatype, data)
-    VALUES ('$name', '$type', 'yes')";
+    VALUES ('$name', '$type', '.$data.')";
       // use exec() because no results are returned
       $conn->exec($sql);
       echo "New record created successfully";
