@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Ligma</title>
+    <title>JosiDrive Admin</title>
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
