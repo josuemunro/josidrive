@@ -8,7 +8,7 @@ body{
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    padding: 100px 4%;
+    padding: 120px 4%;
   }
 .box{
     background-color: white;
@@ -18,6 +18,8 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-height: 40%;
+    max-width: 20%;
 }
 embed{
     height: 100%;
@@ -50,7 +52,7 @@ embed{
     font-size: 12px;
   }
   .download:hover{
-      background-color: lightblue;
+      background-color: #18aeff;
   }
   .formparent{
     padding: 120px 4%;

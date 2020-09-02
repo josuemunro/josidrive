@@ -14,7 +14,8 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/xenial64"
 
-  config.vm.define "MySQLServer"
+
+  config.vm.define "adminApache"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -30,11 +31,11 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  #config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.3.11"
+  config.vm.network "private_network", ip: "192.168.3.12"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -67,27 +68,16 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
+    apt-get install -y apache2 php libapache2-mod-php php-mysql
 
-      export MYSQL_PWD='insecure_mysqlroot_pw'
-
-      echo "mysql-server mysql-server/root_password password $MYSQL_PWD" | debconf-set-selections
-      echo "mysql-server mysql-server/root_password_again password $MYSQL_PWD" | debconf-set-selections
-
-      apt-get -y install mysql-server
-
-      echo "CREATE DATABASE josidrive;" | mysql
-      echo "CREATE USER 'webuser'@'%' IDENTIFIED BY 'insecure_db_pw';" | mysql
-      echo "GRANT SELECT, INSERT ON josidrive.* TO 'webuser'@'%';" | mysql
-
-      echo "CREATE USER 'admin'@'%' IDENTIFIED BY 'secure_db_pw';" | mysql
-      echo "GRANT ALL PRIVILEGES ON josidrive.* TO 'admin'@'%';" | mysql
-
-      export MYSQL_PWD='secure_db_pw'
-
-      cat /vagrant/setup-database.sql | mysql -u admin josidrive
-
-      sed -i'' -e '/bind-address/s/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
-
-      service mysql restart
+    # Change VM's webserver's configuration to use shared folder.
+    # (Look inside test-website.conf for specifics.)
+    cp /vagrant/admin.conf /etc/apache2/sites-available/
+    # activate our website configuration ...
+    a2ensite admin
+    # ... and disable the default website provided with Apache
+    a2dissite 000-default
+    # Reload the webserver configuration, to pick up our changes
+    service apache2 reload
   SHELL
 end

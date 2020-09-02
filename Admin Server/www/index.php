@@ -7,29 +7,26 @@
 </head>
 <body>
 <div class="header">
-  <a href="index.php">
+  <a href="http://127.0.0.1:8080">
     <img class="logo" src="logo.png">
   </a>
-  <a href="upload.html">Upload</a>
-  <a href="http://192.168.3.12">Admin</a>
+  Admin Page
 </div>
 <div class="parent">
+<table>
 <?php
   include 'dbConfig.php';
     
   $q = $conn->query("SELECT * FROM files");
 
   while($row = $q->fetch()){
-  echo "<div class='box'>
-    <embed src='data:".$row['datatype'].";base64,".base64_encode($row['data'])."'/>
-    <a class='download' target='_blank' href='download.php?id=".$row['id']."'>
-      Download ".$row['name']."
-    </a>
-  </div>";
-}
-
+    echo "<tr><td>".$row["name"]."</td><td>".$row["datatype"]."</td>
+    <td><a class='download' target='_blank' href='delete.php?id=".$row['id']."'>
+    Delete
+    </a></td></tr>";
+  }
 ?>
+</table>
 </div>
-
 </body>
 </html>

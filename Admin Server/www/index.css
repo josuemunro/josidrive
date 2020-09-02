@@ -1,0 +1,30 @@
+html{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+body{
+    margin: 0;
+}
+.header {
+    padding: 1% 4%;
+    background: white;
+    color: #1290D2;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    box-shadow: 0px 0px 6px grey;
+    font-size: 30px;
+  }
+  .logo{
+      width: auto;
+      height: 60px;
+  }
+  .parent{
+    padding: 120px 4%;
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+  td{
+    padding: 15px;
+  }
