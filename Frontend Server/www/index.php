@@ -38,7 +38,10 @@
       ".$row["name"]."
     </a>
     <embed src='data:".$row['datatype'].";base64,".base64_encode($row['data'])."' width='200'/>
-  </li>";
+  </li>
+  <a target='_blank' href='download.php?id=".$row['id']."'>
+      Download here!
+    </a>";
 }
 
 ?>
