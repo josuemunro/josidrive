@@ -21,7 +21,7 @@
     $data = addslashes(file_get_contents($_FILES['myfile']['tmp_name']));
     try {
       $sql = "INSERT INTO files (name, datatype, data)
-    VALUES ('$name', '$type', '.$data.')";
+    VALUES ('$name', '$type', '{$data}')";
       // use exec() because no results are returned
       $conn->exec($sql);
       echo "New record created successfully";
@@ -33,9 +33,16 @@
   $q = $conn->query("SELECT * FROM files");
 
   while($row = $q->fetch()){
-  echo "<p>".$row["name"]."</p><p>".$row["datatype"]."</p>";
+  echo "<li>
+    <a target='_blank' href='view.php?id=".$row['id']."'>
+      ".$row["name"]."
+    </a>
+    <embed src='data:".$row['datatype'].";base64,".base64_encode($row['data'])."' width='200'/>
+  </li>";
 }
 
 ?>
+<br>
+
 </body>
 </html>
